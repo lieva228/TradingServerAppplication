@@ -15,9 +15,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AssetsService {
-    AssetsRepository assetsRepository;
-    UserService userService;
-    TokenService tokenService;
+    private final AssetsRepository assetsRepository;
+    private final UserService userService;
+    private final TokenService tokenService;
 
     public Assets findAssertsByUserId(Long id) {
         User user = userService.getById(id);

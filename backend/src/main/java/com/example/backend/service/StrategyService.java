@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class StrategyService {
-    StrategyRepository strategyRepository;
+    private final StrategyRepository strategyRepository;
 
     public List<Strategy> findAll() {
         return strategyRepository.findAll();

@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TokenService {
-    TokenRepository tokenRepository;
+    private final TokenRepository tokenRepository;
 
     public List<Token> findAll() {
         return tokenRepository.findAll();
