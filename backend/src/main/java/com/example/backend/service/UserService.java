@@ -15,7 +15,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User getById(Long id) {
-        return userRepository.findById(id).orElseThrow();
+        return userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("User with id " + id + " not found")
+        );
     }
 
     public User save(User user) {
