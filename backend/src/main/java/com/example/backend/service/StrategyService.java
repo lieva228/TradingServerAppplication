@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Strategy;
 import com.example.backend.model.Token;
 import com.example.backend.repository.StrategyRepository;
@@ -19,6 +20,8 @@ public class StrategyService {
     }
 
     public Strategy findStrategy(Long id) {
-        return strategyRepository.findById(id).orElseThrow();
+        return strategyRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Strategy with id " + id + " not found")
+        );
     }
 }

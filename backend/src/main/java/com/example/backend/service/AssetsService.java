@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.AddStrategyRequest;
+import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Assets;
 import com.example.backend.model.Strategy;
 import com.example.backend.model.Token;
@@ -20,10 +21,12 @@ public class AssetsService {
 
     public Assets findAssertsByUserId(Long id) {
         User user = userService.getById(id);
-        return assetsRepository.findByUser(user);
+        return assetsRepository.findByUser(user).orElseThrow(
+                () -> new ResourceNotFoundException("Assets for user with id " + id + " not found")
+        );
     }
 
-    public void addStrategy(AddStrategyRequest request) {
+    public Strategy addStrategy(AddStrategyRequest request) {
         Assets assets = findAssertsByUserId(request.userId());
         Token token = tokenService.findToken(request.tokenId());
         List<Strategy> strategies = assets.getStrategies();
@@ -36,5 +39,6 @@ public class AssetsService {
         strategies.add(strategy);
         assets.setStrategies(strategies);
         assetsRepository.save(assets);
+        return strategy;
     }
 }

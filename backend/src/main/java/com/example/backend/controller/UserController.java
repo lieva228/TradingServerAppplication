@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> findUser(@PathVariable Long id) {
-        User user = userService.getById(id);
-        return ResponseEntity.ok(user);
+    @GetMapping("/current")
+    public User findUser() {
+        long currentUserId = userService.getCurrentUser().getId();
+        return userService.getById(currentUserId);
     }
 
     @GetMapping("/hi")
@@ -24,9 +24,9 @@ public class UserController {
         return "Hello, world!";
     }
 
-    @PatchMapping("/edit/{id}")
-    public ResponseEntity<User> editUser(@PathVariable Long id, @RequestBody UserEditRequest userEditRequest) {
-        User user = userService.editUser(id, userEditRequest);
-        return ResponseEntity.ok(user);
+    @PostMapping("/edit")
+    public User editUser(@RequestBody UserEditRequest userEditRequest) {
+        long currentUserId = userService.getCurrentUser().getId();
+        return userService.editUser(currentUserId, userEditRequest);
     }
 }

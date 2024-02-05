@@ -1,9 +1,11 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.UserEditRequest;
+import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.User;
 import com.example.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +36,9 @@ public class UserService {
     }
 
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Пользователь с именем " + username + " не найден"));
+        return userRepository.findByUsername(username).orElseThrow(
+                () -> new ResourceNotFoundException("User with username " + username + " not found")
+        );
     }
 
     public UserDetailsService userDetailsService() {
@@ -43,18 +46,22 @@ public class UserService {
     }
 
     public User editUser(Long id, UserEditRequest userEditRequest) {
-        User user = userRepository.findById(id).orElseThrow();
-        if (userRepository.existsByUsername(userEditRequest.username())) {
-            throw new RuntimeException("Пользователь с таким именем уже существует");
-        } else {
-            user.setUsername(userEditRequest.username());
-        }
+        System.out.println("we are here");
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("User with id " + id + " not found")
+        );
         if (userRepository.existsByApiKey(userEditRequest.apiKey())) {
             throw new RuntimeException("Этот apiKey уже используется");
         } else {
             user.setApiKey(userEditRequest.apiKey());
             user.setSecretKey(userEditRequest.secretKey());
         }
+        System.out.println("and here");
         return save(user);
+    }
+
+    public User getCurrentUser() {
+        var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return findByUsername(username);
     }
 }

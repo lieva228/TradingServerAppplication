@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.AddTokenRequest;
+import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Token;
 import com.example.backend.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +19,14 @@ public class TokenService {
     }
 
     public Token findToken(Long id) {
-        return tokenRepository.findById(id).orElseThrow();
+        return tokenRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Token with id " + id + " not found")
+        );
     }
 
-    public void addToken(AddTokenRequest addTokenRequest) {
+    public Token addToken(AddTokenRequest addTokenRequest) {
         Token token = Token.builder().token(addTokenRequest.token()).build();
         tokenRepository.save(token);
+        return token;
     }
 }

@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.AddStrategyRequest;
 import com.example.backend.model.Assets;
+import com.example.backend.model.Strategy;
 import com.example.backend.service.AssetsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,8 +21,7 @@ public class AssetsController {
     }
 
     @PostMapping("/add/{id}")
-    public ResponseEntity<HttpStatus> addStrategy(@PathVariable Long id, @RequestBody AddStrategyRequest addStrategyRequest) {
-        assetsService.addStrategy(addStrategyRequest);
-        return ResponseEntity.ok(HttpStatus.OK);
+    public Strategy addStrategy(@PathVariable Long id, @RequestBody AddStrategyRequest addStrategyRequest) {
+        return assetsService.addStrategy(addStrategyRequest);
     }
 }

@@ -31,8 +31,7 @@ public class TokenController {
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<HttpStatus> addToken(@RequestBody AddTokenRequest addTokenRequest) {
-        tokenService.addToken(addTokenRequest);
-        return ResponseEntity.ok(HttpStatus.OK);
+    public Token addToken(@RequestBody AddTokenRequest addTokenRequest) {
+        return tokenService.addToken(addTokenRequest);
     }
 }
