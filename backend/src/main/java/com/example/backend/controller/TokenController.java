@@ -1,12 +1,15 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.AddTokenRequest;
+import com.example.backend.dto.UserEditRequest;
 import com.example.backend.model.Token;
 import com.example.backend.service.TokenService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +25,14 @@ public class TokenController {
     }
 
     @GetMapping("/{id}")
-    public Token findProduct(@PathVariable Long id) {
+    public Token findToken(@PathVariable Long id) {
         return tokenService.findToken(id);
+    }
+
+    @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<HttpStatus> addToken(@RequestBody AddTokenRequest addTokenRequest) {
+        tokenService.addToken(addTokenRequest);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

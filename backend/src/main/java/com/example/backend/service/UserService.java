@@ -4,7 +4,6 @@ import com.example.backend.dto.UserEditRequest;
 import com.example.backend.model.User;
 import com.example.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -34,13 +33,13 @@ public class UserService {
         return save(user);
     }
 
-    public User getByUsername(String username) {
+    public User findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Пользователь с именем " + username + " не найден"));
     }
 
     public UserDetailsService userDetailsService() {
-        return this::getByUsername;
+        return this::findByUsername;
     }
 
     public User editUser(Long id, UserEditRequest userEditRequest) {

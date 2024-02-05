@@ -15,12 +15,12 @@ public class AssetsController {
     private final AssetsService assetsService;
 
     @GetMapping("/{id}")
-    public Assets userAssets(@PathVariable Long id) {
+    public Assets findAssetsByUser(@PathVariable Long id) {
         return assetsService.findAssertsByUserId(id);
     }
 
     @PostMapping("/add/{id}")
-    public ResponseEntity<HttpStatus> addAsset(@PathVariable Long id, @RequestBody AddStrategyRequest addStrategyRequest) {
+    public ResponseEntity<HttpStatus> addStrategy(@PathVariable Long id, @RequestBody AddStrategyRequest addStrategyRequest) {
         assetsService.addStrategy(addStrategyRequest);
         return ResponseEntity.ok(HttpStatus.OK);
     }

@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.AddTokenRequest;
 import com.example.backend.model.Token;
 import com.example.backend.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,5 +19,10 @@ public class TokenService {
 
     public Token findToken(Long id) {
         return tokenRepository.findById(id).orElseThrow();
+    }
+
+    public void addToken(AddTokenRequest addTokenRequest) {
+        Token token = Token.builder().token(addTokenRequest.token()).build();
+        tokenRepository.save(token);
     }
 }

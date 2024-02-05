@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @GetMapping("/hi")
-    public String hi() {
+    public String check() {
         return "Hello, world!";
     }
 
