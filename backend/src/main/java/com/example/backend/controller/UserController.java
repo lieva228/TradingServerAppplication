@@ -1,27 +1,37 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.AddStrategyRequest;
 import com.example.backend.dto.UserEditRequest;
+import com.example.backend.model.Strategy;
 import com.example.backend.model.User;
 import com.example.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/current")
+    @GetMapping("/info")
     public User findUser() {
         long currentUserId = userService.getCurrentUser().getId();
         return userService.getById(currentUserId);
     }
 
-    @GetMapping("/hi")
-    public String check() {
-        return "Hello, world!";
+    @GetMapping("/strategies")
+    public List<Strategy> findStrategies() {
+        long currentUserId = userService.getCurrentUser().getId();
+        return userService.findStrategiesByUserId(currentUserId);
+    }
+
+    @GetMapping("add/strategy")
+    public Strategy addStrategy(@RequestBody AddStrategyRequest addStrategyRequest) {
+        long currentUserId = userService.getCurrentUser().getId();
+        return userService.addStrategy(currentUserId, addStrategyRequest);
     }
 
     @PostMapping("/edit")

@@ -31,8 +31,6 @@ public class JwtService {
             claims.put("id", customUserDetails.getId());
             claims.put("email", customUserDetails.getEmail());
             claims.put("role", customUserDetails.getRole());
-            claims.put("apiKey", customUserDetails.getApiKey());
-            claims.put("secretKey", customUserDetails.getSecretKey());
         }
         return generateToken(claims, userDetails);
     }

@@ -1,7 +1,10 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.AddStrategyRequest;
 import com.example.backend.dto.UserEditRequest;
 import com.example.backend.exception.ResourceNotFoundException;
+import com.example.backend.model.Strategy;
+import com.example.backend.model.Token;
 import com.example.backend.model.User;
 import com.example.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,10 +12,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final TokenService tokenService;
 
     public User getById(Long id) {
         return userRepository.findById(id).orElseThrow(
@@ -22,6 +28,11 @@ public class UserService {
 
     public User save(User user) {
         return userRepository.save(user);
+    }
+
+    public List<Strategy> findStrategiesByUserId(Long id) {
+        User user = getById(id);
+        return user.getStrategies();
     }
 
     public User create(User user) {
@@ -60,6 +71,21 @@ public class UserService {
         }
         System.out.println("and here");
         return save(user);
+    }
+
+    public Strategy addStrategy(long userId, AddStrategyRequest request) {
+        User user = getById(userId);
+        List<Strategy> strategies = findStrategiesByUserId(userId);
+        Token token = tokenService.findToken(request.tokenId());
+        Strategy strategy = Strategy.builder()
+                .strategy(request.type())
+                .amount(request.amount())
+                .token(token)
+                .build();
+        strategies.add(strategy);
+        user.setStrategies(strategies);
+        save(user);
+        return strategy;
     }
 
     public User getCurrentUser() {

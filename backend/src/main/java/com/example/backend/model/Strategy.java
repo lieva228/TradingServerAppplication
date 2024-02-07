@@ -18,10 +18,6 @@ public class Strategy {
 //    @JoinColumn(username = "token_id")
     private Token token;
 
-    @ManyToOne
-//    @JoinColumn(username = "assets_id")
-    private Assets assets;
-
     private double amount;
 
     @Enumerated(EnumType.STRING)
