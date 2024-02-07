@@ -11,6 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -28,6 +30,7 @@ public class AuthenticationService {
                 .apiKey(request.apiKey())
                 .secretKey(request.secretKey())
                 .role(Role.ROLE_USER)
+                .strategies(new ArrayList<>())
                 .build();
 
         userService.create(user);

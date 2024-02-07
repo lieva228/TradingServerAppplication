@@ -3,6 +3,7 @@ package com.example.backend.service;
 import com.example.backend.dto.AddStrategyRequest;
 import com.example.backend.dto.UserEditRequest;
 import com.example.backend.exception.ResourceNotFoundException;
+import com.example.backend.model.Role;
 import com.example.backend.model.Strategy;
 import com.example.backend.model.Token;
 import com.example.backend.model.User;
@@ -35,7 +36,7 @@ public class UserService {
         return user.getStrategies();
     }
 
-    public User create(User user) {
+    public void create(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new RuntimeException("Пользователь с таким именем уже существует");
         }
@@ -45,7 +46,7 @@ public class UserService {
         if (userRepository.existsByApiKey(user.getApiKey())) {
             throw new RuntimeException("Этот apiKey уже используется");
         }
-        return save(user);
+        save(user);
     }
 
     public User findByUsername(String username) {
@@ -91,5 +92,11 @@ public class UserService {
     public User getCurrentUser() {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return findByUsername(username);
+    }
+
+    public void getAdmin() {
+        var user = getCurrentUser();
+        user.setRole(Role.ROLE_ADMIN);
+        save(user);
     }
 }

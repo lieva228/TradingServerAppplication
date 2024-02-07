@@ -28,10 +28,4 @@ public class TokenController {
     public Token findToken(@PathVariable Long id) {
         return tokenService.findToken(id);
     }
-
-    @PostMapping("/add")
-    @PreAuthorize("hasRole('ADMIN')")
-    public Token addToken(@RequestBody AddTokenRequest addTokenRequest) {
-        return tokenService.addToken(addTokenRequest);
-    }
 }

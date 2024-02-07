@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.AddStrategyRequest;
 import com.example.backend.dto.UserEditRequest;
+import com.example.backend.model.Role;
 import com.example.backend.model.Strategy;
 import com.example.backend.model.User;
 import com.example.backend.service.UserService;
@@ -32,6 +33,14 @@ public class UserController {
     public Strategy addStrategy(@RequestBody AddStrategyRequest addStrategyRequest) {
         long currentUserId = userService.getCurrentUser().getId();
         return userService.addStrategy(currentUserId, addStrategyRequest);
+    }
+
+    // for test
+    @GetMapping("/admin")
+    public User admin() {
+        User currentUser = userService.getCurrentUser();
+        userService.getAdmin();
+        return currentUser;
     }
 
     @PostMapping("/edit")
