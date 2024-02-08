@@ -18,7 +18,7 @@ public class Strategy {
 //    @JoinColumn(username = "token_id")
     private Token token;
 
-    private double amount;
+    private Integer amount;
 
     @Enumerated(EnumType.STRING)
     private StrategyType strategy;

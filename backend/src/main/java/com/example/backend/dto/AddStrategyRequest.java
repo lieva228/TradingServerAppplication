@@ -4,6 +4,6 @@ import com.example.backend.model.Strategy;
 
 public record AddStrategyRequest (
     long tokenId,
-    double amount,
+    Integer amount,
     Strategy.StrategyType type
 ){}

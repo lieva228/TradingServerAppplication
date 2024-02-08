@@ -1,11 +1,13 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.AddStrategyRequest;
+import com.example.backend.dto.RemoveStrategyRequest;
 import com.example.backend.dto.UserEditRequest;
 import com.example.backend.model.Role;
 import com.example.backend.model.Strategy;
 import com.example.backend.model.User;
 import com.example.backend.service.UserService;
+import com.example.backend.service.proto.UserProtoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,10 +31,16 @@ public class UserController {
         return userService.findStrategiesByUserId(currentUserId);
     }
 
-    @GetMapping("add/strategy")
+    @PostMapping("add/strategy")
     public Strategy addStrategy(@RequestBody AddStrategyRequest addStrategyRequest) {
         long currentUserId = userService.getCurrentUser().getId();
         return userService.addStrategy(currentUserId, addStrategyRequest);
+    }
+
+    @DeleteMapping("remove/strategy")
+    public void removeStrategy(@RequestBody RemoveStrategyRequest removeStrategyRequest) {
+        long currentUserId = userService.getCurrentUser().getId();
+        userService.removeStrategy(currentUserId, removeStrategyRequest);
     }
 
     // for test

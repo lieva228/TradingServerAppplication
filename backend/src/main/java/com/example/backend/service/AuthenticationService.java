@@ -5,6 +5,7 @@ import com.example.backend.dto.SignInRequest;
 import com.example.backend.dto.SignUpRequest;
 import com.example.backend.model.Role;
 import com.example.backend.model.User;
+import com.example.backend.service.proto.UserProtoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +21,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final UserProtoService userProtoService;
 
     public JwtAuthenticationResponse signUp(SignUpRequest request) {
 

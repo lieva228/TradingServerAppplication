@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.AddStrategyRequest;
+import com.example.backend.dto.RemoveStrategyRequest;
 import com.example.backend.dto.UserEditRequest;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Role;
@@ -8,6 +9,7 @@ import com.example.backend.model.Strategy;
 import com.example.backend.model.Token;
 import com.example.backend.model.User;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.service.proto.UserProtoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,10 +22,12 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final TokenService tokenService;
+    private final StrategyService strategyService;
+    private final UserProtoService userProtoService;
 
     public User getById(Long id) {
         return userRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("User with id " + id + " not found")
+                () -> new ResourceNotFoundException("User with strategyId " + id + " not found")
         );
     }
 
@@ -38,15 +42,16 @@ public class UserService {
 
     public void create(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {
-            throw new RuntimeException("Пользователь с таким именем уже существует");
+            throw new RuntimeException(user.getUsername() + " is taken");
         }
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Пользователь с таким email уже существует");
+            throw new RuntimeException(user.getEmail() + " is taken");
         }
         if (userRepository.existsByApiKey(user.getApiKey())) {
-            throw new RuntimeException("Этот apiKey уже используется");
+            throw new RuntimeException(user.getApiKey() + " is taken");
         }
         save(user);
+        userProtoService.createUser(user);
     }
 
     public User findByUsername(String username) {
@@ -60,17 +65,16 @@ public class UserService {
     }
 
     public User editUser(Long id, UserEditRequest userEditRequest) {
-        System.out.println("we are here");
         User user = userRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("User with id " + id + " not found")
+                () -> new ResourceNotFoundException("User with strategyId " + id + " not found")
         );
         if (userRepository.existsByApiKey(userEditRequest.apiKey())) {
-            throw new RuntimeException("Этот apiKey уже используется");
+            throw new RuntimeException(user.getApiKey() + " is taken");
         } else {
             user.setApiKey(userEditRequest.apiKey());
             user.setSecretKey(userEditRequest.secretKey());
         }
-        System.out.println("and here");
+        userProtoService.editUser(userEditRequest);
         return save(user);
     }
 
@@ -86,7 +90,20 @@ public class UserService {
         strategies.add(strategy);
         user.setStrategies(strategies);
         save(user);
+        strategy = strategyService.save(strategy);
+        userProtoService.addStrategy(userId, strategy);
         return strategy;
+    }
+
+    public void removeStrategy(long userId, RemoveStrategyRequest request) {
+        User user = getById(userId);
+        List<Strategy> strategies = findStrategiesByUserId(userId);
+        Strategy toDelete = strategyService.findStrategy(request.strategyId());
+        strategies.remove(toDelete);
+        user.setStrategies(strategies);
+        save(user);
+        strategyService.delete(toDelete);
+        userProtoService.deleteStrategy(userId, request);
     }
 
     public User getCurrentUser() {

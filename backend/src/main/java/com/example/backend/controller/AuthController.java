@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.JwtAuthenticationResponse;
 import com.example.backend.dto.SignInRequest;
+import com.example.backend.service.proto.UserProtoService;
 import jakarta.validation.Valid;
 import com.example.backend.dto.SignUpRequest;
 import com.example.backend.service.AuthenticationService;

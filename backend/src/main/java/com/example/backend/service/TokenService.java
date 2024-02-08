@@ -20,7 +20,7 @@ public class TokenService {
 
     public Token findToken(Long id) {
         return tokenRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Token with id " + id + " not found")
+                () -> new ResourceNotFoundException("Token with strategyId " + id + " not found")
         );
     }
 
