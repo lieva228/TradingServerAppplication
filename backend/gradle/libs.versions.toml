@@ -1,0 +1,44 @@
+[versions]
+jjwt = "0.11.2"
+spring = "3.2.2"
+
+[plugins]
+google-protobuf = { id = "com.google.protobuf", version = "0.9.4" }
+spring-boot = { id = "org.springframework.boot", version = "3.2.2" }
+spring-dependency = { id = "io.spring.dependency-management", version = "1.1.4" }
+
+[libraries]
+spring-boot-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring"}
+spring-boot-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring"}
+spring-boot-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "spring"}
+
+lombok = { module = "org.projectlombok:lombok", version = "1.18.30"}
+
+h2 = { module = "com.h2database:h2", version = "2.2.224"}
+postgresql = { module = "org.postgresql:postgresql", version = "42.7.1"}
+
+jwt = { module = "com.auth0:java-jwt", version = "4.4.0"}
+jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt"}
+jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt"}
+jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt"}
+
+grpc-spring = { module = "io.github.lognet:grpc-spring-boot-starter", version = "5.1.0"}
+protobuf-protoc = { module = "com.google.protobuf:protoc", version = "3.24.4"}
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version = "3.24.4"}
+gen-grpc = { module = "io.grpc:protoc-gen-grpc-java", version = "1.59.0"}
+grpc-stub = { module = "io.grpc:grpc-stub", version = "1.40.1"}
+
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version = "3.12.0"}
+
+jakarta = { module = "jakarta.validation:jakarta.validation-api", version = "3.0.0"}
+
+annotation = { module = "javax.annotation:javax.annotation-api", version = "1.3.2"}
+
+spring-boot-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring"}
+spring-boot-security-test = { module = "org.springframework.security:spring-security-test", version = "6.2.1"}
+
+okhttp3 = { module = "com.squareup.okhttp3:okhttp", version = "4.12.0"}
+okhttp3-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version = "4.12.0"}
+
+retrofit = { module = "com.squareup.retrofit2:retrofit", version = "2.9.0"}
+retrofit-converter-jackson = { module = "com.squareup.retrofit2:converter-jackson", version = "2.9.0"}

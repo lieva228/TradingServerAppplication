@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package com.example.backend.user.creation;
+
+option java_multiple_files = true;
+
+service UserTradeService{
+  rpc CreateUser(CreateUserRequest) returns (EmptyResponse) {}
+  rpc EditUser(EditUserRequest) returns (EmptyResponse) {}
+  rpc AddStrategyToUser(AddStrategyToUserRequest) returns (EmptyResponse) {}
+  rpc DeleteStrategyFromUser(DeleteStrategyFromUserRequest) returns (EmptyResponse) {}
+}
+
+message UserTradeServiceStrategy {
+  int64 strategyId = 1;
+  string type = 2;
+  int32 amount = 3;
+}
+
+message CreateUserRequest {
+  int64 userId = 1;
+  string apiKey = 2;
+  string secretKey = 3;
+  repeated UserTradeServiceStrategy strategies = 4;
+}
+
+message EditUserRequest {
+  int64 userId = 1;
+  string apiKey = 2;
+  string secretKey = 3;
+}
+
+message AddStrategyToUserRequest {
+  int64 userId = 1;
+  UserTradeServiceStrategy strategy = 2;
+}
+
+message DeleteStrategyFromUserRequest {
+  int64 userId = 1;
+  int64 strategyId = 2;
+}
+
+message EmptyResponse {
+  string answer = 1;
+}

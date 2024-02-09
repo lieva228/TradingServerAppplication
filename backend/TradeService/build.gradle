@@ -1,0 +1,53 @@
+plugins {
+    alias libs.plugins.google.protobuf
+    alias libs.plugins.spring.boot
+    alias libs.plugins.spring.dependency
+}
+
+
+dependencies {
+    implementation libs.spring.boot.jpa
+    implementation libs.spring.boot.web
+
+    annotationProcessor libs.lombok
+    compileOnly libs.lombok
+
+    runtimeOnly libs.postgresql
+    runtimeOnly libs.h2
+
+    implementation libs.grpc.spring
+    implementation libs.protobuf.protoc
+    implementation libs.protobuf.java
+    implementation libs.gen.grpc
+    implementation libs.grpc.stub
+
+    implementation libs.okhttp3
+    implementation libs.okhttp3.interceptor
+
+    implementation libs.retrofit
+    implementation libs.retrofit.converter.jackson
+
+    implementation libs.commons.lang3
+
+    implementation libs.jakarta
+
+    implementation libs.annotation
+
+    testImplementation libs.spring.boot.test
+}
+
+protobuf {
+    protoc {
+        artifact = libs.protobuf.protoc.get()
+    }
+
+    plugins {
+        grpc {
+            artifact = libs.gen.grpc.get()
+        }
+    }
+
+    generateProtoTasks {
+        all()*.plugins {grpc {}}
+    }
+}

@@ -1,1 +1,5 @@
 rootProject.name = 'backend'
+
+include 'GatewayService'
+include 'TradeService'
+

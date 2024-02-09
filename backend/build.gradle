@@ -1,68 +1,21 @@
-plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.2.2'
-	id 'io.spring.dependency-management' version '1.1.4'
-	id 'com.google.protobuf' version '0.9.4'
-}
+group = 'com.example.backend'
 
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
+subprojects {
+	apply plugin: 'java'
 
-java {
-	sourceCompatibility = '21'
-}
+	group = rootProject.group
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
-repositories {
-	mavenCentral()
-}
-
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	runtimeOnly 'com.h2database:h2'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.postgresql:postgresql'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
-	implementation 'com.auth0:java-jwt:4.4.0'
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
-	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
-	implementation 'org.apache.commons:commons-lang3:3.12.0'
-	implementation 'jakarta.validation:jakarta.validation-api:3.0.0'
-
-	implementation 'io.github.lognet:grpc-spring-boot-starter:5.1.0'
-	implementation 'com.google.protobuf:protoc:3.24.4'
-	implementation 'com.google.protobuf:protobuf-java:3.24.4'
-	implementation 'io.grpc:protoc-gen-grpc-java:1.59.0'
-	implementation 'io.grpc:grpc-stub:1.40.1'
-	implementation 'javax.annotation:javax.annotation-api:1.3.2'
-}
-
-protobuf {
-	protoc {
-		artifact = "com.google.protobuf:protoc:3.24.4"
+	java {
+		sourceCompatibility = '21'
 	}
 
-	plugins {
-		grpc {
-			artifact = "io.grpc:protoc-gen-grpc-java:1.59.0"
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
 		}
 	}
 
-	generateProtoTasks {
-		all()*.plugins {grpc {}}
+	repositories {
+		mavenCentral()
 	}
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
 }
