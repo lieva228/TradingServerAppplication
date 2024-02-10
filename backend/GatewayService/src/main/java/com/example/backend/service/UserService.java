@@ -1,13 +1,10 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.AddStrategyRequest;
-import com.example.backend.dto.RemoveStrategyRequest;
+import com.example.backend.dto.AddDealRequest;
+import com.example.backend.dto.RemoveDealRequest;
 import com.example.backend.dto.UserEditRequest;
 import com.example.backend.exception.ResourceNotFoundException;
-import com.example.backend.model.Role;
-import com.example.backend.model.Strategy;
-import com.example.backend.model.Token;
-import com.example.backend.model.User;
+import com.example.backend.model.*;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.grpc.UserProtoService;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final TokenService tokenService;
-    private final StrategyService strategyService;
     private final UserProtoService userProtoService;
 
     public User getById(Long id) {
@@ -31,27 +26,30 @@ public class UserService {
         );
     }
 
+    public List<String> getTokens() {
+        return userProtoService.getTokens();
+    }
+
     public User save(User user) {
         return userRepository.save(user);
     }
 
-    public List<Strategy> findStrategiesByUserId(Long id) {
-        User user = getById(id);
-        return user.getStrategies();
+    public List<Deal> findDealsByUserId(Long userId) {
+        return userProtoService.getDealsFromUser(userId);
     }
 
-    public void create(User user) {
+    public void create(User user, String apiKey, String secretKey) {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new RuntimeException(user.getUsername() + " is taken");
         }
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException(user.getEmail() + " is taken");
         }
-        if (userRepository.existsByApiKey(user.getApiKey())) {
-            throw new RuntimeException(user.getApiKey() + " is taken");
+        if (userProtoService.checkApiKey(apiKey)) {
+            throw new RuntimeException(apiKey + " is taken");
         }
         save(user);
-        userProtoService.createUser(user);
+        userProtoService.createUser(user, apiKey, secretKey);
     }
 
     public User findByUsername(String username) {
@@ -68,42 +66,27 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("User with strategyId " + id + " not found")
         );
-        if (userRepository.existsByApiKey(userEditRequest.apiKey())) {
-            throw new RuntimeException(user.getApiKey() + " is taken");
+        if (userProtoService.checkApiKey(userEditRequest.apiKey())) {
+            throw new RuntimeException(userEditRequest.apiKey() + " is taken");
         } else {
-            user.setApiKey(userEditRequest.apiKey());
-            user.setSecretKey(userEditRequest.secretKey());
+            userProtoService.editUser(userEditRequest);
         }
         userProtoService.editUser(userEditRequest);
         return save(user);
     }
 
-    public Strategy addStrategy(long userId, AddStrategyRequest request) {
-        User user = getById(userId);
-        List<Strategy> strategies = findStrategiesByUserId(userId);
-        Token token = tokenService.findToken(request.tokenId());
-        Strategy strategy = Strategy.builder()
-                .strategy(request.type())
-                .amount(request.amount())
-                .token(token)
-                .build();
-        strategies.add(strategy);
-        user.setStrategies(strategies);
-        save(user);
-        strategy = strategyService.save(strategy);
-        userProtoService.addStrategy(userId, strategy);
-        return strategy;
+    public Deal addDeal(long userId, AddDealRequest request) {
+        Deal deal = new Deal(request.type(), request.amount(), request.token());
+        userProtoService.addDeal(userId, deal);
+        return deal;
     }
 
-    public void removeStrategy(long userId, RemoveStrategyRequest request) {
-        User user = getById(userId);
-        List<Strategy> strategies = findStrategiesByUserId(userId);
-        Strategy toDelete = strategyService.findStrategy(request.strategyId());
-        strategies.remove(toDelete);
-        user.setStrategies(strategies);
-        save(user);
-        strategyService.delete(toDelete);
-        userProtoService.deleteStrategy(userId, request);
+    public void deleteDeal(long userId, RemoveDealRequest request) {
+        userProtoService.deleteDeal(userId, request);
+    }
+
+    public String getStrategyToken(long userId, String token) {
+        return userProtoService.getTokenStrategyFromUser(userId, token);
     }
 
     public User getCurrentUser() {

@@ -1,30 +1,26 @@
 package com.example.backend.model;
 
+import com.example.backend.exception.ResourceNotFoundException;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Builder
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class Strategy {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public enum Strategy {
+    RSI("Rsi"),
+    SMA("Sma"),
+    NONE("None");
 
-    @ManyToOne
-//    @JoinColumn(username = "token_id")
-    private Token token;
+    private final String stringValue;
 
-    private Integer amount;
+    Strategy(String stringValue) {
+        this.stringValue = stringValue;
+    }
 
-    @Enumerated(EnumType.STRING)
-    private StrategyType strategy;
-
-    public enum StrategyType {
-        RSI,
-        SMA,
+    public static Strategy fromString(String value) {
+        for (Strategy enumValue : Strategy.values()) {
+            if (enumValue.stringValue.equalsIgnoreCase(value)) {
+                return enumValue;
+            }
+        }
+        return NONE;
     }
 }

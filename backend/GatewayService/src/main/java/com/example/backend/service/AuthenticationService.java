@@ -29,13 +29,10 @@ public class AuthenticationService {
                 .username(request.username())
                 .email(request.email())
                 .password(passwordEncoder.encode(request.password()))
-                .apiKey(request.apiKey())
-                .secretKey(request.secretKey())
                 .role(Role.ROLE_USER)
-                .strategies(new ArrayList<>())
                 .build();
 
-        userService.create(user);
+        userService.create(user, request.apiKey(), request.secretKey());
 
         var jwt = jwtService.generateToken(user);
         return new JwtAuthenticationResponse(jwt);

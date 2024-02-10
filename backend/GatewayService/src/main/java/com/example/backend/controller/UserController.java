@@ -1,9 +1,9 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.AddStrategyRequest;
-import com.example.backend.dto.RemoveStrategyRequest;
+import com.example.backend.dto.AddDealRequest;
+import com.example.backend.dto.RemoveDealRequest;
 import com.example.backend.dto.UserEditRequest;
-import com.example.backend.model.Strategy;
+import com.example.backend.model.Deal;
 import com.example.backend.model.User;
 import com.example.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,22 +23,39 @@ public class UserController {
         return userService.getById(currentUserId);
     }
 
-    @GetMapping("/strategies")
-    public List<Strategy> findStrategies() {
+    @GetMapping("/deals")
+    public List<Deal> findDials() {
         long currentUserId = userService.getCurrentUser().getId();
-        return userService.findStrategiesByUserId(currentUserId);
+        return userService.findDealsByUserId(currentUserId);
+    }
+
+    @GetMapping("/tokens")
+    public List<String> findTokens() {
+        return userService.getTokens();
+    }
+
+    @GetMapping("/user/{token}")
+    public String findStrategyToken(@PathVariable String token) {
+        long currentUserId = userService.getCurrentUser().getId();
+        return userService.getStrategyToken(currentUserId, token);
     }
 
     @PostMapping("add/strategy")
-    public Strategy addStrategy(@RequestBody AddStrategyRequest addStrategyRequest) {
+    public Deal addDeal(@RequestBody AddDealRequest addStrategyRequest) {
         long currentUserId = userService.getCurrentUser().getId();
-        return userService.addStrategy(currentUserId, addStrategyRequest);
+        return userService.addDeal(currentUserId, addStrategyRequest);
+    }
+
+    @PostMapping("/edit")
+    public User editUser(@RequestBody UserEditRequest userEditRequest) {
+        long currentUserId = userService.getCurrentUser().getId();
+        return userService.editUser(currentUserId, userEditRequest);
     }
 
     @DeleteMapping("remove/strategy")
-    public void removeStrategy(@RequestBody RemoveStrategyRequest removeStrategyRequest) {
+    public void removeStrategy(@RequestBody RemoveDealRequest removeDealRequest) {
         long currentUserId = userService.getCurrentUser().getId();
-        userService.removeStrategy(currentUserId, removeStrategyRequest);
+        userService.deleteDeal(currentUserId, removeDealRequest);
     }
 
     // for test
@@ -47,11 +64,5 @@ public class UserController {
         User currentUser = userService.getCurrentUser();
         userService.getAdmin();
         return currentUser;
-    }
-
-    @PostMapping("/edit")
-    public User editUser(@RequestBody UserEditRequest userEditRequest) {
-        long currentUserId = userService.getCurrentUser().getId();
-        return userService.editUser(currentUserId, userEditRequest);
     }
 }

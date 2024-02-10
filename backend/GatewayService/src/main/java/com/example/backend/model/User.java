@@ -35,19 +35,19 @@ public class User implements UserDetails {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "apiKey", unique = true, nullable = false)
-    private String apiKey;
-
-    @Column(name = "secretKey", nullable = false)
-    private String secretKey;
+//    @Column(name = "apiKey", unique = true, nullable = false)
+//    private String apiKey;
+//
+//    @Column(name = "secretKey", nullable = false)
+//    private String secretKey;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
 
-    @OneToMany
-    @Column(name = "strategies")
-    private List<Strategy> strategies;
+//    @OneToMany
+//    @Column(name = "strategies")
+//    private List<Strategy> strategies;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

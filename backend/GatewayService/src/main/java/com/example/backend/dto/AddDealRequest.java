@@ -2,8 +2,8 @@ package com.example.backend.dto;
 
 import com.example.backend.model.Strategy;
 
-public record AddStrategyRequest (
-    long tokenId,
+public record AddDealRequest(
+    String token,
     Integer amount,
-    Strategy.StrategyType type
+    Strategy type
 ){}

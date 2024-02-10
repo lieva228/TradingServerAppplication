@@ -4,24 +4,28 @@ package com.example.backend.user.creation;
 
 option java_multiple_files = true;
 
-service UserTradeService{
+service UserTradeService {
   rpc CreateUser(CreateUserRequest) returns (EmptyResponse) {}
   rpc EditUser(EditUserRequest) returns (EmptyResponse) {}
-  rpc AddStrategyToUser(AddStrategyToUserRequest) returns (EmptyResponse) {}
-  rpc DeleteStrategyFromUser(DeleteStrategyFromUserRequest) returns (EmptyResponse) {}
+  rpc AddDealToUser(AddDealToUserRequest) returns (EmptyResponse) {}
+  rpc DeleteDealFromUser(DeleteDealFromUserRequest) returns (EmptyResponse) {}
+  rpc GetDealsFromUser(GetDealsFromUserRequest) returns (DealsResponse) {}
+  rpc CheckApiKey(CheckApiKeyRequest) returns (BooleanResponse) {}
+  rpc GetTokenStrategyFromUser(GetTokenStrategyFromUserRequest) returns (StrategyResponse) {}
+  rpc GetTokens(EmptyRequest) returns (TokensResponse) {}
 }
 
-message UserTradeServiceStrategy {
-  int64 strategyId = 1;
-  string type = 2;
-  int32 amount = 3;
+message DealRequest {
+  string strategy = 1;
+  int32 amount = 2;
+  string token = 3;
 }
 
 message CreateUserRequest {
   int64 userId = 1;
   string apiKey = 2;
   string secretKey = 3;
-  repeated UserTradeServiceStrategy strategies = 4;
+  repeated DealRequest Deals = 4;
 }
 
 message EditUserRequest {
@@ -30,16 +34,47 @@ message EditUserRequest {
   string secretKey = 3;
 }
 
-message AddStrategyToUserRequest {
+message AddDealToUserRequest {
   int64 userId = 1;
-  UserTradeServiceStrategy strategy = 2;
+  DealRequest deal = 2;
 }
 
-message DeleteStrategyFromUserRequest {
+message DeleteDealFromUserRequest {
   int64 userId = 1;
-  int64 strategyId = 2;
+  string token = 2;
+}
+
+message GetTokenStrategyFromUserRequest {
+  int64 userId = 1;
+  string token = 2;
+}
+
+message CheckApiKeyRequest {
+  string apiKey = 1;
+}
+
+message GetDealsFromUserRequest {
+  int64 userId = 1;
+}
+
+message EmptyRequest {}
+
+message DealsResponse {
+  repeated DealRequest deals = 1;
+}
+
+message TokensResponse {
+  repeated string tokens = 1;
 }
 
 message EmptyResponse {
   string answer = 1;
+}
+
+message BooleanResponse {
+  bool answer = 1;
+}
+
+message StrategyResponse {
+  string strategy = 1;
 }
