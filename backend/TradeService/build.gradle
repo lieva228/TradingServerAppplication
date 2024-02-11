@@ -31,7 +31,7 @@ dependencies {
 
     implementation libs.jakarta
 
-    implementation libs.annotation
+    implementation libs.javax.annotation
 
     testImplementation libs.spring.boot.test
 }

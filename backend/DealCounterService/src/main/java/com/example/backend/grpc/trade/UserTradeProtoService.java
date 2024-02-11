@@ -22,7 +22,7 @@ public class UserTradeProtoService {
     public void addDeal(NewDealRequest newDealRequest) {
         stub.addDeal(AddDealRequest.newBuilder()
                         .setToken(newDealRequest.token())
-                        .setStrategy(newDealRequest.strategy())
+                        .setStrategy(newDealRequest.strategy().name())
                         .setSide(newDealRequest.side().name())
                         .build()
         );

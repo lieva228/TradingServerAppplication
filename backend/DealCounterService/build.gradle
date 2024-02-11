@@ -20,7 +20,10 @@ dependencies {
     implementation libs.gen.grpc
     implementation libs.grpc.stub
 
-    implementation libs.annotation
+    implementation libs.javax.annotation
+    implementation libs.jetbrains.annotation
+
+    implementation libs.okhttp3
 }
 
 protobuf {
