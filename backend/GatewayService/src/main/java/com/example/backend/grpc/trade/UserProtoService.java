@@ -1,11 +1,11 @@
-package com.example.backend.grpc;
+package com.example.backend.grpc.trade;
 
 import com.example.backend.dto.RemoveDealRequest;
 import com.example.backend.dto.UserEditRequest;
 import com.example.backend.model.Deal;
 import com.example.backend.model.Strategy;
 import com.example.backend.model.User;
-import com.example.backend.user.creation.*;
+import com.example.backend.trade.*;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.stereotype.Service;
@@ -98,10 +98,6 @@ public class UserProtoService {
                         .build()
         );
         return response.getAnswer();
-    }
-
-    public List<String> getTokens() {
-        return null;
     }
 
     public String getTokenStrategyFromUser(long userId, String token) {

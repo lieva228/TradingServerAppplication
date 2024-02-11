@@ -29,18 +29,13 @@ public class UserController {
         return userService.findDealsByUserId(currentUserId);
     }
 
-    @GetMapping("/tokens")
-    public List<String> findTokens() {
-        return userService.getTokens();
-    }
-
-    @GetMapping("/user/{token}")
+    @GetMapping("/{token}/strategy")
     public String findStrategyToken(@PathVariable String token) {
         long currentUserId = userService.getCurrentUser().getId();
-        return userService.getStrategyToken(currentUserId, token);
+        return userService.getStrategyToken(currentUserId, token).name();
     }
 
-    @PostMapping("add/strategy")
+    @PostMapping("add/deal")
     public Deal addDeal(@RequestBody AddDealRequest addStrategyRequest) {
         long currentUserId = userService.getCurrentUser().getId();
         return userService.addDeal(currentUserId, addStrategyRequest);
@@ -52,13 +47,14 @@ public class UserController {
         return userService.editUser(currentUserId, userEditRequest);
     }
 
-    @DeleteMapping("remove/strategy")
-    public void removeStrategy(@RequestBody RemoveDealRequest removeDealRequest) {
+    @DeleteMapping("remove/deal")
+    public void removeDeal(@RequestBody RemoveDealRequest removeDealRequest) {
         long currentUserId = userService.getCurrentUser().getId();
         userService.deleteDeal(currentUserId, removeDealRequest);
     }
 
     // for test
+    @Deprecated
     @GetMapping("/admin")
     public User admin() {
         User currentUser = userService.getCurrentUser();

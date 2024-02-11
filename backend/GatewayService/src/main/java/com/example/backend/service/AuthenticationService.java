@@ -5,14 +5,12 @@ import com.example.backend.dto.SignInRequest;
 import com.example.backend.dto.SignUpRequest;
 import com.example.backend.model.Role;
 import com.example.backend.model.User;
-import com.example.backend.grpc.UserProtoService;
+import com.example.backend.grpc.trade.UserProtoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor

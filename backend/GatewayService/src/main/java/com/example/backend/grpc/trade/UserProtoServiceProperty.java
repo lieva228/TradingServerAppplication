@@ -1,4 +1,4 @@
-package com.example.backend.grpc;
+package com.example.backend.grpc.trade;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

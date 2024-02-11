@@ -4,9 +4,10 @@ import com.example.backend.dto.AddDealRequest;
 import com.example.backend.dto.RemoveDealRequest;
 import com.example.backend.dto.UserEditRequest;
 import com.example.backend.exception.ResourceNotFoundException;
+import com.example.backend.grpc.deal_counter.DealCounterProtoService;
 import com.example.backend.model.*;
 import com.example.backend.repository.UserRepository;
-import com.example.backend.grpc.UserProtoService;
+import com.example.backend.grpc.trade.UserProtoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +20,7 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final UserProtoService userProtoService;
+    private final DealCounterProtoService dealCounterProtoService;
 
     public User getById(Long id) {
         return userRepository.findById(id).orElseThrow(
@@ -27,7 +29,7 @@ public class UserService {
     }
 
     public List<String> getTokens() {
-        return userProtoService.getTokens();
+        return dealCounterProtoService.getTokens();
     }
 
     public User save(User user) {
@@ -85,8 +87,8 @@ public class UserService {
         userProtoService.deleteDeal(userId, request);
     }
 
-    public String getStrategyToken(long userId, String token) {
-        return userProtoService.getTokenStrategyFromUser(userId, token);
+    public Strategy getStrategyToken(long userId, String token) {
+        return Strategy.fromString(userProtoService.getTokenStrategyFromUser(userId, token));
     }
 
     public User getCurrentUser() {

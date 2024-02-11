@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package com.example.backend.dealcounter;
+
+option java_multiple_files = true;
+
+service DealCounterService {
+  rpc GetTokens(GetTokensRequest) returns (TokensResponse) {}
+  rpc AddToken(AddTokenRequest) returns (EmptyResponse) {}
+}
+
+message GetTokensRequest {
+}
+
+message AddTokenRequest {
+  string token = 1;
+}
+
+message EmptyResponse {
+  string token = 1;
+}
+
+message TokensResponse {
+  repeated string tokens = 1;
+}

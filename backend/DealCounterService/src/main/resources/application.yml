@@ -1,5 +1,8 @@
 server:
-  port: 8080
+  port: 8082
+
+grpc:
+  port: 9091
 
 spring:
   application:
@@ -28,9 +31,3 @@ trade:
     grpc:
       host: localhost
       port: 9090
-
-dealcounter:
-  server:
-    grpc:
-      host: localhost
-      port: 9091

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package com.example.backend.trade;
+
+option java_multiple_files = true;
+
+service UserTradeService {
+  rpc AddDeal(AddDealRequest) returns (EmptyResponse) {}
+}
+
+message AddDealRequest {
+  string token = 1;
+  string strategy = 2;
+  string side = 3;
+}
+
+message EmptyResponse {
+  string answer = 1;
+}
